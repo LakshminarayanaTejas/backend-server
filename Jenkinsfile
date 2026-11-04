@@ -8,10 +8,12 @@ pipeline {
 
     stages {
 
-        steps {
-            git branch: 'main', 
-                url: 'https://github.com/LakshminarayanaTejas/backend-server.git',
-                credentialsId: 'github-credentials'
+        stage('Checkout') {
+            steps {
+                git branch: 'main', 
+                    url: 'https://github.com/LakshminarayanaTejas/backend-server.git',
+                    credentialsId: 'github-credentials'
+            }
         }
 
         stage('Login to ECR') {
