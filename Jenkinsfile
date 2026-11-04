@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = "ap-south-1"
-        ECR_REPO = "851725169930.dkr.ecr.ap-south-1.amazonaws.com/backend-service"
+        AWS_REGION = "us-east-1"
+        ECR_REPO = "027275363480.dkr.ecr.us-east-1.amazonaws.com/backend-service"
     }
 
     stages {
         stage('Checkout') {
             steps {
                 cleanWs()
-                git 'https://github.com/sushant4612/backend-server'
+                git 'https://github.com/LakshminarayanaTejas/backend-server.git'
             }
         },
         stage('Login to ECR') {
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 sshagent(credentials: ['ec2-key']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@65.0.27.218 "
+                    ssh -o StrictHostKeyChecking=no ubuntu@107.21.180.17 "
                         docker pull ${ECR_REPO}:latest &&
                         docker stop backend || true &&
                         docker rm backend || true &&
