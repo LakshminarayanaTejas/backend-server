@@ -12,7 +12,8 @@ pipeline {
                 cleanWs()
                 git 'https://github.com/LakshminarayanaTejas/backend-server.git'
             }
-        },
+        }
+        
         stage('Login to ECR') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-ecr-credentials']]) {
