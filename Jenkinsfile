@@ -46,9 +46,12 @@ pipeline {
                 sshagent(credentials: ['ec2-key']) {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@54.90.100.31 '
+                        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO &&
                         docker pull $ECR_REPO:latest &&
                         docker stop backend || true &&
-                        docker rm backend || true &&
+                        docker rm -f backend || true &&
+                        docker ps -q --filter expose=5000 | xargs -r docker stop &&
+                        docker ps -a -q --filter expose=5000 | xargs -r docker rm &&
                         docker run -d -p 5000:5000 --name backend $ECR_REPO:latest
                     '
                     """
