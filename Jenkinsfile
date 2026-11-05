@@ -7,8 +7,7 @@ pipeline {
     }
 
     stages {
-
-        stage('Checkout') {
+        stage('Checkout from Git') {
             steps {
                 git branch: 'main', 
                     url: 'https://github.com/LakshminarayanaTejas/backend-server.git',
