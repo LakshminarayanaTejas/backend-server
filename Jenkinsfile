@@ -45,7 +45,7 @@ pipeline {
             steps {
                 sshagent(credentials: ['ec2-key']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@107.21.180.17 '
+                    ssh -o StrictHostKeyChecking=no ubuntu@54.90.100.31 '
                         docker pull $ECR_REPO:latest &&
                         docker stop backend || true &&
                         docker rm backend || true &&
