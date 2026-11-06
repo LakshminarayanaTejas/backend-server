@@ -43,10 +43,13 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-ecr-credentials']]) {
+                withCredentials([usernamePassword(credentialsId: 'aws-ecr-credentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sshagent(credentials: ['ec2-key']) {
                         sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@54.90.100.31 '
+                            export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
+                            export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
+                            export AWS_DEFAULT_REGION="us-east-1"
                             aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO &&
                             docker pull $ECR_REPO:latest &&
                             docker stop backend || true &&
