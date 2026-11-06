@@ -43,7 +43,7 @@ pipeline {
 
         stage('Deploy to EC2') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'aws-ecr-credentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                withCredentials([aws(credentialsId: 'aws-ecr-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sshagent(credentials: ['ec2-key']) {
                         sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@54.90.100.31 '
